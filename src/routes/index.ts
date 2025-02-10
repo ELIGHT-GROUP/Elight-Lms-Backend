@@ -1,12 +1,11 @@
 import { Hono } from 'hono';
 
-import users from './users';
-import products from './products';
+
+import auth from './auth';
 
 const Routers = new Hono();
 
-Routers.route('/users', users);  
-Routers.route('/products', products);
+Routers.route('/auth', auth)
 
 export default Routers;
 
