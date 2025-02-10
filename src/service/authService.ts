@@ -1,42 +1,27 @@
-import { OAuth2Client } from "google-auth-library";
-import { AppError } from "../middleware/errorHandler";
+import type { Context } from "hono";
+import passport from "passport";
 
-const client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
-);
-
-export const getAuthorizationUrl = (): string => {
-  return client.generateAuthUrl({
-    access_type: "offline",
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email",
-    ],
+export const getAuthorizationUrl = (c: Context) => {
+  return new Promise<Response>((resolve, reject) => {
+    passport.authenticate("google", (err: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(c.newResponse("Redirecting to Google...", 302));
+      }
+    })(c.req.raw as any, c.res as any, () => {});
   });
 };
 
-export const getUserInfoFromCode = async (code: string) => {
-  if (!code) {
-    throw new AppError(400, "No authorization code provided");
-  }
-
-  try {
-    const { tokens } = await client.getToken(code);
-    client.setCredentials(tokens);
-
-    const userInfoResponse = await client.request({
-      url: "https://www.googleapis.com/oauth2/v3/userinfo",
-    });
-
-    const user = userInfoResponse.data;
-
-    console.log("Authenticated user:", user);
-
-    return user;
-  } catch (error) {
-    console.error("Authentication error:", error);
-    throw new AppError(400, "Google Authentication failed. Please try again.");
-  }
+export const setCallBack = (c: Context) => {
+  return new Promise<Response>((resolve, reject) => {
+    passport.authenticate("google", (err: any, user: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        c.set("user", user);
+        resolve(c.redirect("/"));
+      }
+    })(c.req.raw as any, c.res as any, () => {});
+  });
 };

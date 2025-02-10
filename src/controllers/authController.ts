@@ -1,29 +1,21 @@
-import {
-  getAuthorizationUrl,
-  getUserInfoFromCode,
-} from "../service/authService";
 import { AppError } from "../middleware/errorHandler";
 import type { Context } from "hono";
+import { getAuthorizationUrl, setCallBack } from "../service/authService";
 
-export const getAuthorizationUrlHandler = (c: Context) => {
-  const authorizationUrl = getAuthorizationUrl();
-  return c.redirect(authorizationUrl);
+export const getAuthorizationUrlHandler = async (c: Context) => {
+  try {
+    return await getAuthorizationUrl(c);
+  } catch (error) {
+    console.error(error);
+    throw new AppError(500, "Authontication failed");
+  }
 };
 
 export const setCallBackHandler = async (c: Context) => {
-  const { code } = await c.req.json();
-
-  console.log("code", code);
-
   try {
-    const user = await getUserInfoFromCode(code as string);
-
-    return c.json({
-      message: "Authenticated successfully!",
-      user,
-    });
+    return await setCallBack(c);
   } catch (error) {
-    console.log("error", error);
-    throw new AppError(400, "Authentication failed");
+    console.error(error);
+    throw new AppError(500, "Failed to set callback");
   }
 };
