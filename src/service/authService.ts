@@ -32,11 +32,8 @@ export const getUserInfoFromCode = async (code: string) => {
 
     const user = userInfoResponse.data;
 
-    console.log("Authenticated user:", user);
-
     return user;
   } catch (error) {
-    console.error("Authentication error:", error);
     throw new AppError(400, "Google Authentication failed. Please try again.");
   }
 };
