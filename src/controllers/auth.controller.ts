@@ -11,9 +11,7 @@ export const getAuthorizationUrlHandler = (c: Context) => {
 };
 
 export const setCallBackHandler = async (c: Context) => {
-  //const { code } = await c.req.json();
-
-  const code = "ghj"
+  const code = await c.req.query("code");
 
   console.log("code", code);
 
