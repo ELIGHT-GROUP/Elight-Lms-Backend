@@ -7,19 +7,14 @@
     "dev": "bun --watch src/index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/passport": "^1.0.17",
-    "@types/passport-google-oauth20": "^2.0.16",
-    "prettier": "^3.5.0"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "hono": "^4.7.0",
-    "nanoid": "^5.0.9",
-    "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "google-auth-library": "^9.15.1",
+    "hono": "^4.7.0"
   }
 }
