@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 
 
-import authRouter from './auth.router';
+import authRouter from './auth.routes';
 
 const Routers = new Hono();
 

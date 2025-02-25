@@ -4,17 +4,23 @@
   "type": "module",
   "scripts": {
     "start": "bun src/index.ts",
-    "dev": "bun --watch src/index.ts"
+    "dev": "bun --watch src/index.ts",
+    "prisma:migrate": "bunx prisma migrate dev --name migrate --schema=./src/prisma/schema.prisma",
+    "prisma:reset": "bunx prisma db push --force-reset --schema=./src/prisma/schema.prisma"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.9"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "dotenv": "^16.4.7",
     "google-auth-library": "^9.15.1",
-    "hono": "^4.7.0"
+    "hono": "^4.7.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.4.1"
   }
 }
