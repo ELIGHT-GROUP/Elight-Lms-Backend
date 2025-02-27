@@ -1,2 +1,2 @@
-# elightlms
+# ELIGHT-LMS-BACKEND
 
